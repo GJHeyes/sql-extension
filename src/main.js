@@ -32,12 +32,17 @@ async function main(){
     console.table(wageBrackets)
 
     const [notDevs,meta5] = await db.query(`
-    SELECT job_title AS 'Job Title', salary AS 'Salary'
-    FROM current_job_detail 
-    WHERE job_title != 'Developer'
-    GROUP BY 1
-    ORDER BY 2 DESC
-`)
+    SELECT employee_detail.name AS 'Name',
+    current_job_detail.salary AS 'Salary'
+    FROM employee_detail 
+    INNER JOIN current_job_detail ON employee_detail.employee_id = current_job_detail.employee_id AND
+    current_job_detail.job_title NOT LIKE '%developer%'
+    ORDER BY 2 DESC;
+    `)
+
+ // WHERE job_title != 'Developer'
+    // GROUP BY 1
+    // ORDER BY 2 DESC
 
 console.table(notDevs)
 
